@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <LinearLayout 
+        android:layout_width="match_parent" 
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/product_name" 
+            android:labelFor="@+id/new_product_name"
+            android:layout_weight="1"/>
+        <EditText
+            android:id="@id/new_product_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="text" 
+            android:layout_weight="2"/>
+    </LinearLayout>
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView 
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/product_unit"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/new_product_unit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:layout_weight="2" >
+        </AutoCompleteTextView>
+        
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent" 
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/product_price" 
+            android:labelFor="@+id/new_product_price"/>
+        <EditText
+            android:id="@id/new_product_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:inputType="numberDecimal" />
+    </LinearLayout>
+     <LinearLayout
+        android:layout_width="match_parent" 
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="?android:attr/buttonBarStyle">
+    <Button 
+        android:id="@+id/add_new_product"
+        android:text="@string/add_product"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="?android:attr/buttonBarButtonStyle" />
+    <Button 
+        android:id="@+id/cancel_add_new_product"
+        android:text="@string/cancel"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" 
+        style="?android:attr/buttonBarButtonStyle" />
+    </LinearLayout>
+</LinearLayout>

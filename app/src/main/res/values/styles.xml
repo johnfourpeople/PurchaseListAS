@@ -1,0 +1,45 @@
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name = "AppTheme" parent="AppTheme.Base"/>
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
+        <item name="android:windowBackground" >@color/AntiqueWhite</item>
+        <item name="android:dropDownListViewStyle">@style/PopupMenuListView</item>
+        <item name="dropDownListViewStyle">@style/PopupMenuListView</item>
+
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="actionBarStyle">@style/MyActionBar</item>
+        <item name="android:actionOverflowButtonStyle">@style/OverflowButton</item>
+        <item name="actionOverflowButtonStyle">@style/OverflowButton</item>
+
+        <item name="colorPrimary">@color/Tan</item>
+
+        <item name="colorPrimaryDark">@color/Feldspar</item>
+
+         <item name="colorAccent">@color/Feldspar</item>
+
+    </style>
+
+
+    <style name="OverflowButton" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <!-- Customize popup button -->
+    </style>
+
+    <style name="PopupMenuListView" parent="@style/Widget.AppCompat.Light.ListView.DropDown">
+        <item name="android:background">@color/AntiqueWhite</item>
+        <item name="background">@color/AntiqueWhite</item>
+        <item name="android:divider">@color/Tan</item>
+        <item name="android:dividerHeight">0.5dp</item>
+    </style>
+
+ <style name="MyActionBar"
+           parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/Tan</item>
+        <item name="background">@color/Tan</item>
+
+    </style>
+
+</resources>
