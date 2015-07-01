@@ -50,7 +50,7 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 	
 	private class EditionSaver implements TextWatcher{
 
-		String currentText;
+		private String currentText;
 		@Override
 		public void afterTextChanged(Editable s) {
 			currentText = s.toString();
@@ -59,17 +59,15 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count,
 				int after) {
-			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before,
 				int count) {
-			// TODO Auto-generated method stub
-			
+
 		}
-		
+		void reset(){currentText = null;}
 		String getCurrentText(){
 			return currentText;
 		}		
@@ -177,6 +175,7 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 			EditText editName = (EditText)rowView.findViewById(R.id.editProductName);
 			EditText editPrice = (EditText)rowView.findViewById(R.id.editProductPrice);
 
+            Log.d("debug getView", filteredProducts.get(position).getName().toString());
             editName.setText(filteredProducts.get(position).getName());
             editName.addTextChangedListener(nameEditionSaver);
 
@@ -190,12 +189,13 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
             editName.setOnFocusChangeListener(new OnFocusChangeListener() {
 
                 @Override
-                public void onFocusChange(View v, boolean hasFocus) {editPriceFocused = hasFocus;
+                public void onFocusChange(View v, boolean hasFocus) {
+                    editPriceFocused = hasFocus;
                 }
 
             });
 
-			editPrice.setText(filteredProducts.get(position).getFormatedPrice());
+            editPrice.setText(filteredProducts.get(position).getFormatedPrice());
 			editPrice.addTextChangedListener(priceEditionSaver);
 
             if(priceEditionSaver.currentText == null){
@@ -240,6 +240,7 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 	
 
 	public void onItemEdition(int position) {
+        Log.d("debug ", String.valueOf(position));
 		editionPosition = position;
 		notifyDataSetChanged();
 	}
@@ -248,11 +249,15 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 		filteredProducts.get(editionPosition).setName(nameEditionSaver.getCurrentText());
 		products.edit(filteredProducts.get(editionPosition).getID(),nameEditionSaver.getCurrentText(),priceEditionSaver.getCurrentText());
 		editionPosition = -1;
+        nameEditionSaver.reset();
+        priceEditionSaver.reset();
 		notifyDataSetChanged();
 	}
 	
 	public void cancelEdition(){
 		editionPosition = -1;
+        nameEditionSaver.reset();
+        priceEditionSaver.reset();
 		notifyDataSetChanged();
 	}
 	

@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
@@ -78,6 +79,7 @@ public class Products extends AppCompatActivity implements OnClickListener {
 	   	newProduct = (EditText) findViewById(R.id.newProduct);
 	    
 	   	doneCancelLayout = (RelativeLayout) findViewById(R.id.done_cancel_id);
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 	   	
 	   	addProductButton = (Button) findViewById(R.id.searchProduct);
 	   	addProductButton.setOnClickListener(this);
@@ -120,7 +122,6 @@ public class Products extends AppCompatActivity implements OnClickListener {
 
 				@Override
 				public boolean onQueryTextSubmit(String query) {
-					// TODO Auto-generated method stub
 					return false;
 				}
 
@@ -147,7 +148,6 @@ public class Products extends AppCompatActivity implements OnClickListener {
 			return true;
 		case R.id.action_add:
 			Bundle args = new Bundle();
-
 			addProductDialog.setArguments(args);
 			addProductDialog.show(getFragmentManager(), "add Prod");
 			return true;

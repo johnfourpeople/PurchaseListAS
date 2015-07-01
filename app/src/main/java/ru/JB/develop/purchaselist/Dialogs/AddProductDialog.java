@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
@@ -44,6 +45,7 @@ public class AddProductDialog extends DialogFragment implements OnClickListener{
 		productPrice = (TextView) v.findViewById(R.id.new_product_price);
 		productUnit = (AutoCompleteTextView) v.findViewById(R.id.new_product_unit);
 		productUnit.setAdapter(adapter);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN );
 		return v;
 	}
 	
