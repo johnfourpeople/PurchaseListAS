@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.support.v7.widget.SearchView;
+import android.widget.Toast;
 
 public class Products extends AppCompatActivity implements OnClickListener {
 	
@@ -179,8 +180,13 @@ public class Products extends AppCompatActivity implements OnClickListener {
 
 	public void onAddToProductDialogConfirmed(boolean isConfirmed, String newProductName, String newProductUnit , double newProductPrice){
 		if(isConfirmed){
-			adapter.addProduct(newProductName, newProductUnit, newProductPrice);
-			}
+			boolean isAdded = adapter.addProduct(newProductName, newProductUnit, newProductPrice);
+			if(!isAdded){
+                Toast notAddedMessage = Toast.makeText(this,R.string.add_error,Toast.LENGTH_LONG);
+                notAddedMessage.show();
+            }
+		}
+
 	}
 	
 

@@ -297,8 +297,13 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 			return checkedProductIds;
 	}
 	
-	public void addProduct(String newProductName, String unit , double newProductPrice){
-		filteredProducts.add(products.add(new ProductItem(newProductName, unit, newProductPrice)));
-		notifyDataSetChanged();
+	public boolean addProduct(String newProductName, String unit , double newProductPrice){
+		ProductItem newProduct = products.add(new ProductItem(newProductName, unit, newProductPrice));
+		if(newProduct != null) {
+            filteredProducts.add(newProduct);
+            notifyDataSetChanged();
+            return true;
+        }
+        return false;
 	}
 }

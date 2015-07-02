@@ -41,14 +41,13 @@ public class ProductItems  {
 		Comparator<ProductItem> comparator = new Comparator<ProductItem>(){
 
 			@Override
-			public int compare(ProductItem arg0, ProductItem arg1) {
-				
-				return arg0.getID()-arg1.getID();
+			public int compare(ProductItem prod0, ProductItem prod1) {
+				return prod0.getID()-prod1.getID();
 			}
 			
 		};
 		Collections.sort(products, comparator);
-		int index = Collections.binarySearch(products, new ProductItem("",0,id), comparator);
+		int index = Collections.binarySearch(products, new ProductItem("", 0, id), comparator);
 		Log.d("debug items index", String.valueOf(index));
 		return index;
 	}
@@ -58,16 +57,20 @@ public class ProductItems  {
 		if (index >= 0){
 			products.remove(index);
 			database.deleteFromProductsById(idForDelete);
-		}	
+		}
 	}
 	
 	// refactor
 	public ProductItem add(ProductItem newItem){
-		long ID = database.writeToProducts(newItem);;
+		long ID = database.writeToProducts(newItem);
 		newItem.setID(ID);
-		Log.d("debug ProductItems item added with id= ",String.valueOf(ID));
-		products.add(newItem);
-		return newItem;
+		Log.d("debug ProductItems item added with id= ", String.valueOf(ID));
+		if(ID > 0){
+            products.add(newItem);
+            return newItem;
+        }
+
+        return null;
 	}
 	
 	public boolean containsName(String name){

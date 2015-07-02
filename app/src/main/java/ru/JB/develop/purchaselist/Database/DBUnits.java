@@ -18,15 +18,13 @@ public class DBUnits {
 	}
 	
 	public ArrayList<String> readUnits(){
-		String sql = "SELECT * FROM Units ";
+		String sql = "SELECT * FROM "+ Contract.Unit.TABLE;
 		ArrayList<String> list = new ArrayList<String>();
 		Cursor c = database.rawQuery(sql, null);
 		if (c != null) {
 			  if (c.moveToFirst()) {
-				  Integer indexUnitsName = c.getColumnIndex("UnitsName");
-			      Integer indexUnitsId = c.getColumnIndex("UnitsId");
-					
-				  do{
+				  Integer indexUnitsName = c.getColumnIndex(Contract.Unit.NAME);
+			      do{
 					  list.add(c.getString(indexUnitsName));
 				  }while(c.moveToNext());
 		      }
