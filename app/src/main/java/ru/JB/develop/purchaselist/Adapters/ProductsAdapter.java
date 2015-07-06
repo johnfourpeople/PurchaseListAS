@@ -300,7 +300,8 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 	public boolean addProduct(String newProductName, String unit , double newProductPrice){
 		ProductItem newProduct = products.add(new ProductItem(newProductName, unit, newProductPrice));
 		if(newProduct != null) {
-            filteredProducts.add(newProduct);
+            filteredProducts.clear();
+            filteredProducts.addAll(products.getAll());
             notifyDataSetChanged();
             return true;
         }
