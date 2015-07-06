@@ -5,21 +5,20 @@ import java.util.ArrayList;
 import ru.JB.develop.purchaselist.Products;
 import ru.JB.develop.purchaselist.R;
 import ru.JB.develop.purchaselist.Database.DBUnits;
-import android.app.DialogFragment;
+
+import android.app.Dialog;
+import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 public class AddProductDialog extends DialogFragment implements OnClickListener{
-
-
 
     //TODO fix covering dialog by soft keyboard
 
@@ -30,8 +29,33 @@ public class AddProductDialog extends DialogFragment implements OnClickListener{
 	public AddProductDialog(){
 		
 	}
-	
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
+        getDialog().setTitle(R.string.add_product);
+
+        unitDatabase = new DBUnits(getActivity());
+
+        ArrayList<String> units = unitDatabase.readUnits();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,units);
+
+        View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_add_product,new FrameLayout(getActivity()));
+        v.findViewById(R.id.add_new_product).setOnClickListener(this);
+        v.findViewById(R.id.cancel_add_new_product).setOnClickListener(this);
+        productName = (TextView) v.findViewById(R.id.new_product_name);
+        productPrice = (TextView) v.findViewById(R.id.new_product_price);
+        productUnit = (AutoCompleteTextView) v.findViewById(R.id.new_product_unit);
+        productUnit.setAdapter(adapter);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+
+        Dialog builder = new Dialog(getActivity());
+        builder.setContentView(v);
+
+        return builder;
+	}
+
+	/*public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		getDialog().setTitle(R.string.add_product);
 		
 		unitDatabase = new DBUnits(getActivity());
@@ -46,8 +70,10 @@ public class AddProductDialog extends DialogFragment implements OnClickListener{
 		productUnit = (AutoCompleteTextView) v.findViewById(R.id.new_product_unit);
 		productUnit.setAdapter(adapter);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN );
-		return v;
-	}
+
+
+        return v;
+	}*/
 	
 	public void onDismiss(DialogInterface dialog){
 		unitDatabase.close();

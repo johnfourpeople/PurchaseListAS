@@ -9,11 +9,11 @@ import ru.JB.develop.purchaselist.Dialogs.AddProductDialog;
 import ru.JB.develop.purchaselist.Model.ProductItems;
 import ru.JB.develop.purchaselist.Model.PurchaseItem;
 
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -39,8 +39,8 @@ public class Products extends AppCompatActivity implements OnClickListener {
 	Actions action = Actions.None;
 	
 	DialogFragment addProductDialog;
-	DialogFragment deleteProductDialog;
-	
+
+
 	RelativeLayout doneCancelLayout;
 
 	EditText newProduct;
@@ -61,7 +61,7 @@ public class Products extends AppCompatActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_products);
 		
-		addProductDialog = new AddProductDialog();
+
 		
 		products = new ProductItems(this);
 		
@@ -186,7 +186,6 @@ public class Products extends AppCompatActivity implements OnClickListener {
                 notAddedMessage.show();
             }
 		}
-
 	}
 	
 
