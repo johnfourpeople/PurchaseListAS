@@ -84,7 +84,9 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 			final ArrayList<ProductItem> nlist = new ArrayList<ProductItem>(count);
 			
 			String filterableString ;
-			
+
+			//TODO alphabetical sort while filtering
+
 			for (int i = 0; i < count; i++) {
 				filterableString = products.get(i).getName();
 				if (filterableString.toLowerCase().contains(filterString)) {
@@ -292,7 +294,7 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 			notifyDataSetChanged();
 		}
 	}	
-	
+	//TODO fix checkbox
 	public ArrayList<Integer> getCheckedProductsId(){
 			return checkedProductIds;
 	}

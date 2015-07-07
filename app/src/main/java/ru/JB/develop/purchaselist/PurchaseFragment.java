@@ -72,7 +72,7 @@ public class PurchaseFragment extends Fragment{
 
     private void getToProducts(){
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container,new ProductFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.container,new ProductFragment()).addToBackStack(null).commit();
     }
 
     @Override

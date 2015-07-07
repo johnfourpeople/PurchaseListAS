@@ -2,6 +2,7 @@ package ru.JB.develop.purchaselist.Dialogs;
 
 import java.util.ArrayList;
 
+import ru.JB.develop.purchaselist.ProductFragment;
 import ru.JB.develop.purchaselist.Products;
 import ru.JB.develop.purchaselist.R;
 import ru.JB.develop.purchaselist.Database.DBUnits;
@@ -30,9 +31,10 @@ public class AddProductDialog extends DialogFragment implements OnClickListener{
 		
 	}
 
+    //TODO check perfomance oncreateView vs oncreateDialog
+
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-        getDialog().setTitle(R.string.add_product);
 
         unitDatabase = new DBUnits(getActivity());
 
@@ -46,13 +48,12 @@ public class AddProductDialog extends DialogFragment implements OnClickListener{
         productPrice = (TextView) v.findViewById(R.id.new_product_price);
         productUnit = (AutoCompleteTextView) v.findViewById(R.id.new_product_unit);
         productUnit.setAdapter(adapter);
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
 
         Dialog builder = new Dialog(getActivity());
         builder.setContentView(v);
-
-        return builder;
+		builder.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+		builder.setTitle("Add Product");
+		return builder;
 	}
 
 	/*public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -89,12 +90,15 @@ public class AddProductDialog extends DialogFragment implements OnClickListener{
 	public void onClick(View v) {
 		switch(v.getId()){
 		case R.id.add_new_product:
-			Products activity = (Products) getActivity();
+            //TODO  make call form interface
+			ProductFragment fragment = (ProductFragment) getTargetFragment();
 			if(!(productName.getText().toString().trim().isEmpty() || productPrice.getText().toString().trim().isEmpty())){
-				activity.onAddToProductDialogConfirmed(true,productName.getText().toString(), productUnit.getText().toString() , Double.parseDouble(productPrice.getText().toString()));
-		
-				clearTextViews();		
-				dismiss();
+				if(fragment != null) {
+					fragment.onAddToProductDialogConfirmed(true, productName.getText().toString(), productUnit.getText().toString(), Double.parseDouble(productPrice.getText().toString()));
+
+					clearTextViews();
+					dismiss();
+				}
 			}
 			break;
 		case R.id.cancel_add_new_product:

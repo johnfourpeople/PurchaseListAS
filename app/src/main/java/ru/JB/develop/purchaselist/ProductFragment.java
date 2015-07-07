@@ -34,6 +34,9 @@ import ru.JB.develop.purchaselist.Model.ProductItems;
 public class ProductFragment extends Fragment implements View.OnClickListener{
 
 
+
+    static final String TAG = "ProductFragment";
+
     DialogFragment addProductDialog;
 
     enum Actions{
@@ -79,12 +82,14 @@ public class ProductFragment extends Fragment implements View.OnClickListener{
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
+                    Log.d(TAG,"query changed");
                     adapter.getFilter().filter(newText);
                     return false;
                 }
             };
-        }
 
+            searchView.setOnQueryTextListener(queryTextListener);
+        }
     }
 
     @Override
@@ -102,8 +107,10 @@ public class ProductFragment extends Fragment implements View.OnClickListener{
                 onDeleteMenuButtonClick();
                 return true;
             case R.id.action_add:
+                //TODO interaction of fragments must be maden by Activity
                 Bundle args = new Bundle();
                 addProductDialog.setArguments(args);
+                addProductDialog.setTargetFragment(this,0);
 
                 addProductDialog.show(getFragmentManager(),"tag");
                 return true;
@@ -121,6 +128,7 @@ public class ProductFragment extends Fragment implements View.OnClickListener{
 
         products = new ProductItems(mActivity);
 
+       //handleIntent(mActivity.getIntent());
         setHasOptionsMenu(true);
     }
 
@@ -197,13 +205,12 @@ public class ProductFragment extends Fragment implements View.OnClickListener{
     private void processingMenuAction(Actions action){
         switch(action){
             case Add:
-                //getting just Intent will optimize it?
+                //TODO getting just another fragment will optimize it?
                 doneCancelLayout.setVisibility(View.GONE);
                 adapter.hideCheckBox();
                 action = Actions.None;
-                //TODO fragment part
                 FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.container,new PurchaseFragment()).commit();
+                fragmentManager.beginTransaction().replace(R.id.container,new PurchaseFragment()).addToBackStack(null).commit();
 
                 break;
             case Delete:
@@ -222,19 +229,20 @@ public class ProductFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    //TODO fragment part
+  /*  //TODO fragment part
     private void handleIntent(Intent intent){
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
         }
     }
-
+*/
     private void onAddMenuButtonClick(){
         action = Actions.Add;
         adapter.getCheckBox();
         acceptProductActionButton.setText(getString(R.string.add_to_purchases_button));
         doneCancelLayout.setVisibility(View.VISIBLE);
     }
+
     private void onDeleteMenuButtonClick(){
         action = Actions.Delete;
         adapter.getCheckBox();
