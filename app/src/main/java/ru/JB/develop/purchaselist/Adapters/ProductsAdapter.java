@@ -72,7 +72,7 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 			return currentText;
 		}		
 	}
-	//refactor sort
+
 	private class ProductFilter extends Filter{
 
 		@Override
@@ -136,10 +136,7 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 	}
 	
 	@Override
-	public int getViewTypeCount(){
-		return TYPE_MAX;
-		
-	}
+	public int getViewTypeCount() { return TYPE_MAX; }
 	
 	@Override
 	public View getView(int position, View rowView, ViewGroup parent) {
@@ -168,7 +165,7 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 			} else {
 				holder.checkProduct.setVisibility(View.GONE);
 			}
-			holder.checkProduct.setChecked(checkedProductIds.contains(position));
+			holder.checkProduct.setChecked(checkedProductIds.contains(products.get(position).getID()));
 			break;
 		case EDIT_ITEM:
 			//TODO make save button on soft keyboard

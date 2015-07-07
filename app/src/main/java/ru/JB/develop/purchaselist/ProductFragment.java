@@ -205,7 +205,7 @@ public class ProductFragment extends Fragment implements View.OnClickListener{
     private void processingMenuAction(Actions action){
         switch(action){
             case Add:
-                //TODO getting just another fragment will optimize it?
+                //TODO getting just other fragment will optimize it?
                 doneCancelLayout.setVisibility(View.GONE);
                 adapter.hideCheckBox();
                 action = Actions.None;
@@ -229,13 +229,6 @@ public class ProductFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-  /*  //TODO fragment part
-    private void handleIntent(Intent intent){
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-        }
-    }
-*/
     private void onAddMenuButtonClick(){
         action = Actions.Add;
         adapter.getCheckBox();
