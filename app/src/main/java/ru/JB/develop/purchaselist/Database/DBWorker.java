@@ -37,7 +37,7 @@ public class DBWorker {
 		String sqlQuery = "SELECT * FROM "+ Contract.Products.TABLE +" JOIN "+ Contract.Unit.TABLE +
                 " ON "+ Contract.Products.TABLE +"."+ Contract.Products.UNIT_ID
                 +" = "+ Contract.Unit.TABLE +"." + Contract.Unit._ID +
-                " ORDER BY " + Contract.Products._ID;
+                " ORDER BY " + Contract.Products.NAME;
 
 		Cursor c = database.rawQuery(sqlQuery, null);
 		if (c != null) {
@@ -98,17 +98,17 @@ public class DBWorker {
 	
 	public void editProduct(int id, String newName,String newPrice){
 		ContentValues values = new ContentValues();
-		values.put("ProductName", newName);
-		values.put("ProductPrice", newPrice);
-		String whereClause = "ProductsId=?";
+		values.put(Contract.Products.NAME, newName);
+		values.put(Contract.Products.PRICE, newPrice);
+		String whereClause = Contract.Products._ID + " = ?";
 		String[] whereArgs = new String[] {String.valueOf(id)};
-		database.update("Products", values, whereClause , whereArgs );
+		database.update(Contract.Products.TABLE, values, whereClause , whereArgs );
 	}
 	
 	public int writeToUnits(String newName){
 		ContentValues values = new ContentValues();
-		values.put("UnitsName", newName);
-		return (int) database.insert("Units", null, values);
+		values.put(Contract.Unit.NAME, newName);
+		return (int) database.insert(Contract.Unit.TABLE, null, values);
 		
 	}
 	
@@ -175,7 +175,7 @@ public class DBWorker {
 			values.put(Contract.Purchase.NUMBER, 1);
 			values.put(Contract.Purchase.IS_BOUGHT, false);
 			values.put("ProductsId", prodId);
-			Long idd = database.insert("Purchases", null, values);
+			Long idd = database.insert(Contract.Purchase.TABLE, null, values);
 		}
 	}
 	

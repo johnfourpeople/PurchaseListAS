@@ -3,7 +3,6 @@ package ru.JB.develop.purchaselist.Dialogs;
 import java.util.ArrayList;
 
 import ru.JB.develop.purchaselist.ProductFragment;
-import ru.JB.develop.purchaselist.Products;
 import ru.JB.develop.purchaselist.R;
 import ru.JB.develop.purchaselist.Database.DBUnits;
 

@@ -165,7 +165,7 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 			} else {
 				holder.checkProduct.setVisibility(View.GONE);
 			}
-			holder.checkProduct.setChecked(checkedProductIds.contains(products.get(position).getID()));
+			holder.checkProduct.setChecked(checkedProductIds.contains(filteredProducts.get(position).getID()));
 			break;
 		case EDIT_ITEM:
 			//TODO make save button on soft keyboard

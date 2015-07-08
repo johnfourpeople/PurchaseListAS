@@ -3,7 +3,6 @@ package ru.JB.develop.purchaselist;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -128,14 +127,13 @@ public class ProductFragment extends Fragment implements View.OnClickListener{
 
         products = new ProductItems(mActivity);
 
-       //handleIntent(mActivity.getIntent());
         setHasOptionsMenu(true);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_products, container, false);
+        return inflater.inflate(R.layout.fragment_products, container, false);
     }
 
     @Override
