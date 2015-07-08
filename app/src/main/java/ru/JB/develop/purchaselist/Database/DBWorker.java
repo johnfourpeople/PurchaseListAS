@@ -3,7 +3,6 @@ package ru.JB.develop.purchaselist.Database;
 import java.util.ArrayList;
 
 import ru.JB.develop.purchaselist.Model.ProductItem;
-import ru.JB.develop.purchaselist.Model.ProductItems;
 import ru.JB.develop.purchaselist.Model.PurchaseItem;
 import android.content.ContentValues;
 import android.content.Context;
@@ -23,10 +22,16 @@ public class DBWorker {
 		
 	}
 
-    private boolean exist( String name){
+    private boolean nameExistProducts(String name){
         String[] selectionArgs = {name};
 		Cursor c = database.query(Contract.Products.TABLE, null, Contract.Products.NAME+ " = ?", selectionArgs, null, null, null);
-        Log.d("debug db exist",String.valueOf(c.getCount()));
+        Log.d("debug db eexist",String.valueOf(c.getCount()));
+        return (c.getCount()>0);
+    }
+
+	private boolean idExistPurchases(int id){
+        String[] selectionArgs = {String.valueOf(id)};
+        Cursor c = database.query(Contract.Purchase.TABLE, null, Contract.Purchase.PRODUCT_ID + " = ?", selectionArgs, null, null, null);
         return (c.getCount()>0);
     }
 	
@@ -68,7 +73,7 @@ public class DBWorker {
 	}
 
 	public long writeToProducts(ProductItem product){
-        if(!exist(product.getName())) {
+        if(!nameExistProducts(product.getName())) {
             ContentValues values = new ContentValues();
             values.put(Contract.Products.NAME, product.getName());
             values.put(Contract.Products.PRICE, product.getPrice());
@@ -169,15 +174,38 @@ public class DBWorker {
 	}
 
 	public void writeToPurchases(ArrayList<Integer> productsIds){
-		ContentValues values = new ContentValues();
+        ContentValues values = new ContentValues();
 		for(Integer prodId : productsIds){
-			values.clear();
-			values.put(Contract.Purchase.NUMBER, 1);
-			values.put(Contract.Purchase.IS_BOUGHT, false);
-			values.put("ProductsId", prodId);
-			Long idd = database.insert(Contract.Purchase.TABLE, null, values);
-		}
-	}
+            String[] selectionArgs = {String.valueOf(prodId)};
+            Cursor c = database.query(Contract.Purchase.TABLE, null, Contract.Purchase.PRODUCT_ID + " = ?", selectionArgs, null, null, null);
+            if(c.getCount()>0){
+                if(c.moveToFirst()){
+                    Integer indexNumberOfPurchase = c.getColumnIndex(Contract.Purchase.NUMBER);
+                    Integer indexPurchaseIsBought = c.getColumnIndex(Contract.Purchase.IS_BOUGHT);
+                    Integer indexPurchasesId = c.getColumnIndex(Contract.Purchase._ID);
+                    Integer indexProductsId = c.getColumnIndex(Contract.Purchase.PRODUCT_ID);
+                    values.put(Contract.Purchase.NUMBER, (c.getInt(indexNumberOfPurchase) + 1));
+                    values.put(Contract.Purchase.IS_BOUGHT, c.getInt(indexPurchaseIsBought)==1);
+                    values.put(Contract.Purchase._ID, c.getInt(indexPurchasesId));
+                    values.put(Contract.Purchase.PRODUCT_ID, c.getInt(indexProductsId));
+
+                    String whereClause = Contract.Purchase.PRODUCT_ID + " = ?";
+                    String[] whereArgs = new String[] {String.valueOf(prodId)};
+
+                    database.update(Contract.Purchase.TABLE, values, whereClause, whereArgs);
+                }
+            } else {
+
+                values.clear();
+                values.put(Contract.Purchase.NUMBER, 1);
+                values.put(Contract.Purchase.IS_BOUGHT, false);
+                values.put("ProductsId", prodId);
+                Long idd = database.insert(Contract.Purchase.TABLE, null, values);
+
+            }
+        }
+    }
+
 	
 	public void close(){
 		database.close();

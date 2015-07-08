@@ -35,7 +35,6 @@ public class PurchaseFragment extends Fragment{
     PurchaseItems purchases;
     PurchaseAdapter adapter;
 
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
