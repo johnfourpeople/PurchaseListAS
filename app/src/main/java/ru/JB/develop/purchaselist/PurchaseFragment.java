@@ -65,7 +65,8 @@ public class PurchaseFragment extends Fragment{
 
         purchases = new PurchaseItems(getActivity());
 
-
+        if(getArguments() != null)
+            PurchasesId = getArguments().getIntegerArrayList("PurchaseProductIds");
         if(PurchasesId != null)
             purchases.add(PurchasesId);
     }
