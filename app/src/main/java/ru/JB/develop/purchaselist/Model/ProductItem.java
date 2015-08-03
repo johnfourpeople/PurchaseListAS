@@ -2,8 +2,6 @@ package ru.JB.develop.purchaselist.Model;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.Currency;
-import java.util.Locale;
 
 import android.util.Log;
 

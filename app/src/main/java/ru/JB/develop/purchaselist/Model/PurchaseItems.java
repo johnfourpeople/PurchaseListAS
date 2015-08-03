@@ -1,7 +1,13 @@
 package ru.JB.develop.purchaselist.Model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import android.content.Context;
+import android.util.Log;
+
 import ru.JB.develop.purchaselist.Database.DBWorker;
 
 public class PurchaseItems {
@@ -14,48 +20,59 @@ public class PurchaseItems {
 		purchases = database.readFromPurchases();
 	}
 	
-	// Must staing before adapter initialization. Cause - notifing that data set changing
+	// Must staing before adapter initialization. Cause - notifying that data set changing
 	public void add(ArrayList<Integer> productsIds){
 		database.writeToPurchases(productsIds);
 		purchases = database.readFromPurchases();
 	}
 
+    public List<PurchaseItem> getAll(){
+        List<PurchaseItem> copyPurchases = new ArrayList<>();
+        Comparator<PurchaseItem> comparatorByName = new Comparator<PurchaseItem>(){
+            @Override
+            public int compare(PurchaseItem lhs, PurchaseItem rhs) {
+                return lhs.getPurchaseName().compareTo(rhs.getPurchaseName());
+            }
+        };
+        copyPurchases.addAll(purchases);
+        Collections.sort(copyPurchases, comparatorByName);
+        return copyPurchases;
+    }
+
 	
 	public int size(){
 		return purchases.size();
 	}
+
 	public PurchaseItem get(int index){
 		return purchases.get(index);
 	}
+
+    private int findIndexById(int id){
+        Comparator<PurchaseItem> comparator = new Comparator<PurchaseItem>() {
+            @Override
+            public int compare(PurchaseItem lhs, PurchaseItem rhs) {
+                return lhs.getProductId() - rhs.getProductId();
+            }
+        };
+       Collections.sort(purchases, comparator);
+        return Collections.binarySearch(purchases, new PurchaseItem(1,"",1,true, id),comparator);
+    }
+
+    public PurchaseItem getById(int id) {
+        int index = findIndexById(id);
+        Log.d("PurchaseItems", String.valueOf(index));
+        return purchases.get(index);
+    }
 	
-	public void delete(ArrayList<Integer> indexesForDelete){
-		
-		Integer[] sortedIndexes = sort(indexesForDelete);
-		for(int i=0;i<sortedIndexes.length;i++){
-			database.deleteFormPurchases(purchases.get((int)sortedIndexes[i]).getPurchaseName());
-			purchases.remove((int)sortedIndexes[i]);
+	public void delete(ArrayList<Integer> idsForDelete){
+
+        for(int ID : idsForDelete ){
+            //TODO delete DB by id
+            database.deleteFromPurchasesById(ID);
+            purchases.remove(findIndexById(ID));
 		}
 		
 	}
-	//refactor int[]
-	public Integer[] sort(ArrayList<Integer> list){
-		Integer max = 0;
-		int ind = 0;
-		Integer[] newList = (Integer[]) list.toArray(new Integer[list.size()]);                     
-		for(Integer i = 0; i<newList.length;i++){
-			for(Integer j = i; j < newList.length; j++){
-				if (newList[j] > max){
-					max = newList[j];
-					ind = j;
-				}
-			}
-		
-			newList[ind] = newList[i];
-			newList[i] = max;
-			max = 0;
-		}
-		return newList;
-	}
-	
-	
+
 }

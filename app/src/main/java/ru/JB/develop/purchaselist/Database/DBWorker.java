@@ -25,7 +25,7 @@ public class DBWorker {
     private boolean nameExistProducts(String name){
         String[] selectionArgs = {name};
 		Cursor c = database.query(Contract.Products.TABLE, null, Contract.Products.NAME+ " = ?", selectionArgs, null, null, null);
-        Log.d("debug db eexist",String.valueOf(c.getCount()));
+        Log.d("debug db exist",String.valueOf(c.getCount()));
         return (c.getCount()>0);
     }
 
@@ -167,7 +167,12 @@ public class DBWorker {
 	}
 		
 
-	
+
+	public void deleteFromPurchasesById(int ID){
+        String[] whereArgs = {String.valueOf(ID)};
+        database.delete(Contract.Purchase.TABLE, Contract.Purchase.PRODUCT_ID + " = ?", whereArgs);
+    }
+
 	public void deleteFormPurchases(String productName){
         String[] whereArgs = {String.valueOf(getProductId(productName))};
 		database.delete(Contract.Purchase.TABLE, Contract.Products._ID + " = ?", whereArgs);
@@ -206,7 +211,6 @@ public class DBWorker {
         }
     }
 
-	
 	public void close(){
 		database.close();
 	}

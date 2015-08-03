@@ -1,7 +1,9 @@
 package ru.JB.develop.purchaselist.Adapters;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import ru.JB.develop.purchaselist.Model.PurchaseItem;
 import ru.JB.develop.purchaselist.R;
 import ru.JB.develop.purchaselist.Model.PurchaseItems;
 
@@ -15,15 +17,20 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 public class PurchaseAdapter extends BaseAdapter implements OnClickListener {
-	
+
+    static final String TAG = "PurchaseAdapter";
+
 	PurchaseItems purchases;
+    List<PurchaseItem> viewItems;
 	Context context;
 	Boolean deleting = false;
-	ArrayList<Integer> indexesForDelete = new ArrayList<Integer>();
-	
+	ArrayList<Integer> idsForDelete = new ArrayList<Integer>();
+    ArrayList<Integer> checkedIds = new ArrayList<Integer>();
+
 	public PurchaseAdapter(PurchaseItems items, Context cntxt){
 		purchases = items;
 		context = cntxt;
+        viewItems = purchases.getAll();
 	}
 
 
@@ -31,8 +38,7 @@ public class PurchaseAdapter extends BaseAdapter implements OnClickListener {
 				TextView purchaseName;
 				TextView numberOfPurchase;
 				CheckBox purchaseIsBought;
-				
-			}	
+			}
 		 
 	public void getDeleteCheckBox(){
 		deleting = true;
@@ -41,12 +47,12 @@ public class PurchaseAdapter extends BaseAdapter implements OnClickListener {
 	
 	@Override
 	public int getCount() {
-		return purchases.size();
+		return viewItems.size();
 	}
 
 	@Override
 	public Object getItem(int arg0) {
-		return purchases.get(arg0);
+		return viewItems.get(arg0);
 	}
 
 	@Override
@@ -55,15 +61,16 @@ public class PurchaseAdapter extends BaseAdapter implements OnClickListener {
 	}
 
 	public void deleteCheckedItems(){
-		if(indexesForDelete != null){
-			purchases.delete(indexesForDelete);
-			indexesForDelete.clear();
+		if(idsForDelete != null){
+			purchases.delete(idsForDelete);
+            viewItems.clear();
+            viewItems.addAll(purchases.getAll());
+			idsForDelete.clear();
 			deleting = false;
 			notifyDataSetChanged();
 		}
 	}
 	
-
 
 	@Override
 	public View getView(int index, View rowView, ViewGroup arg2) {
@@ -81,39 +88,36 @@ public class PurchaseAdapter extends BaseAdapter implements OnClickListener {
 		holder = (ViewHolder) rowView.getTag();
 		}
 		
-		holder.purchaseName.setText(purchases.get(index).getPurchaseName());
-		holder.numberOfPurchase.setText(((Integer) purchases.get(index).getNumberOfPurchases()).toString());
-		holder.purchaseIsBought.setTag(index);
+		holder.purchaseName.setText(viewItems.get(index).getPurchaseName());
+		holder.numberOfPurchase.setText(String.valueOf(viewItems.get(index).getNumberOfPurchases()));
+		holder.purchaseIsBought.setTag(viewItems.get(index).getProductId());
 		holder.purchaseIsBought.setOnClickListener(this);
 		
 		
 		if (deleting){
 			holder.purchaseIsBought.setBackgroundResource(R.color.Red);
-			if (!indexesForDelete.contains(index))
-				holder.purchaseIsBought.setChecked(false);
+			holder.purchaseIsBought.setChecked(idsForDelete.contains(viewItems.get(index).getProductId()));
 		} else {
-			holder.purchaseIsBought.setChecked(purchases.get(index).getPurchaseIsBought());
+            holder.purchaseIsBought.setChecked(viewItems.get(index).getPurchaseIsBought());
 			holder.purchaseIsBought.setBackgroundResource(R.color.Transparent);
 		}
 		
 		return rowView;
 	}
-	
 
 	@Override
 	public void onClick(View arg0) {
 		Boolean isChecked = ((CheckBox) arg0).isChecked();
 		
 		if(deleting){
-			if(isChecked)
-				indexesForDelete.add((Integer) arg0.getTag());
-			else{
-				indexesForDelete.remove((Integer) arg0.getTag());
-				indexesForDelete.trimToSize();
+			if(isChecked) {
+                idsForDelete.add((Integer) arg0.getTag());
+            } else {
+				idsForDelete.remove(arg0.getTag());
 			}
 		} else {
-			purchases.get((Integer) arg0.getTag()).setPurchaseIsBought(isChecked);
-		}	
+			purchases.getById((Integer) arg0.getTag()).setPurchaseIsBought(isChecked);
+		}
 		notifyDataSetChanged();
 	}
 }

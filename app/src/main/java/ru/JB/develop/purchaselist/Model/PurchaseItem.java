@@ -3,6 +3,7 @@ package ru.JB.develop.purchaselist.Model;
 public class PurchaseItem {
  
 	private int id;
+	private int productId;
 	private int numberOfPurchases;
 	private String purchaseName;
 	private boolean purchaseIsBought;
@@ -13,8 +14,17 @@ public class PurchaseItem {
 		purchaseName = newName;
 		numberOfPurchases = newNumber;
 		purchaseIsBought = isBought;
+        productId = newProductId;
 	}
-	
+
+    public int getProductId(){
+        return productId;
+    }
+
+    public void setProductId(int newId){
+        productId = newId;
+    }
+
 	public int getId(){
 		return id;
 	}
@@ -46,6 +56,5 @@ public class PurchaseItem {
 	public void setPurchaseIsBought(boolean isBought){
 		purchaseIsBought = isBought;
 	}
-	
 
 }

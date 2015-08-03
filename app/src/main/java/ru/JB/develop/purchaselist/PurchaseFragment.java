@@ -1,12 +1,10 @@
 package ru.JB.develop.purchaselist;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -105,7 +103,6 @@ public class PurchaseFragment extends Fragment{
                 }
                 return true;
             default:
-                Log.e("Options MainActivity", "haven't such id of button");
                 return super.onOptionsItemSelected(item);
         }
     }
