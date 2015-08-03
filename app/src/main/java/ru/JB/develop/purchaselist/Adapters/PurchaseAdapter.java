@@ -23,9 +23,9 @@ public class PurchaseAdapter extends BaseAdapter implements OnClickListener {
 	PurchaseItems purchases;
     List<PurchaseItem> viewItems;
 	Context context;
-	Boolean deleting = false;
-	ArrayList<Integer> idsForDelete = new ArrayList<Integer>();
-    ArrayList<Integer> checkedIds = new ArrayList<Integer>();
+	boolean deleting = false;
+	List<Integer> idsForDelete = new ArrayList<Integer>();
+    List<Integer> checkedIds = new ArrayList<Integer>();
 
 	public PurchaseAdapter(PurchaseItems items, Context cntxt){
 		purchases = items;
@@ -92,8 +92,7 @@ public class PurchaseAdapter extends BaseAdapter implements OnClickListener {
 		holder.numberOfPurchase.setText(String.valueOf(viewItems.get(index).getNumberOfPurchases()));
 		holder.purchaseIsBought.setTag(viewItems.get(index).getProductId());
 		holder.purchaseIsBought.setOnClickListener(this);
-		
-		
+
 		if (deleting){
 			holder.purchaseIsBought.setBackgroundResource(R.color.Red);
 			holder.purchaseIsBought.setChecked(idsForDelete.contains(viewItems.get(index).getProductId()));
@@ -101,7 +100,6 @@ public class PurchaseAdapter extends BaseAdapter implements OnClickListener {
             holder.purchaseIsBought.setChecked(viewItems.get(index).getPurchaseIsBought());
 			holder.purchaseIsBought.setBackgroundResource(R.color.Transparent);
 		}
-		
 		return rowView;
 	}
 

@@ -1,6 +1,7 @@
 package ru.JB.develop.purchaselist.Dialogs;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ru.JB.develop.purchaselist.ProductFragment;
 import ru.JB.develop.purchaselist.R;
@@ -37,7 +38,7 @@ public class AddProductDialog extends DialogFragment implements OnClickListener{
 
         unitDatabase = new DBUnits(getActivity());
 
-        ArrayList<String> units = unitDatabase.readUnits();
+        List<String> units = unitDatabase.readUnits();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,units);
 
         View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_add_product,new FrameLayout(getActivity()));

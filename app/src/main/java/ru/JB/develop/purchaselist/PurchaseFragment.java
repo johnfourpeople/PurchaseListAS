@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ru.JB.develop.purchaselist.Adapters.PurchaseAdapter;
 import ru.JB.develop.purchaselist.Model.PurchaseItems;
@@ -28,7 +29,7 @@ public class PurchaseFragment extends Fragment{
 
     ListView purchaseList;
     Activity mActivity;
-    ArrayList<Integer> PurchasesId;
+    List<Integer> PurchasesId;
 
     PurchaseItems purchases;
     PurchaseAdapter adapter;

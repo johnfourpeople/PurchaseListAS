@@ -23,6 +23,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import ru.JB.develop.purchaselist.Adapters.ProductsAdapter;
 import ru.JB.develop.purchaselist.Dialogs.AddProductDialog;
 import ru.JB.develop.purchaselist.Model.ProductItems;
@@ -86,7 +88,6 @@ public class ProductFragment extends Fragment implements View.OnClickListener{
                     return false;
                 }
             };
-
             searchView.setOnQueryTextListener(queryTextListener);
         }
     }
@@ -111,7 +112,7 @@ public class ProductFragment extends Fragment implements View.OnClickListener{
                 addProductDialog.setArguments(args);
                 addProductDialog.setTargetFragment(this,0);
 
-                addProductDialog.show(getFragmentManager(),"tag");
+                addProductDialog.show(getFragmentManager(),"Add Product Dialog");
                 return true;
             case R.id.action_add_to_purchase:
                 onAddMenuButtonClick();
@@ -206,7 +207,7 @@ public class ProductFragment extends Fragment implements View.OnClickListener{
                 //TODO getting just other fragment will optimize it?
 
                 Bundle args = new Bundle();
-                args.putIntegerArrayList("PurchaseProductIds", adapter.getCheckedProductsId());
+                args.putIntegerArrayList("PurchaseProductIds", (ArrayList<Integer>) adapter.getCheckedProductsId());
                 doneCancelLayout.setVisibility(View.GONE);
                 adapter.hideCheckBox();
                 action = Actions.None;

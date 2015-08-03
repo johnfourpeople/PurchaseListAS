@@ -12,7 +12,7 @@ import ru.JB.develop.purchaselist.Database.DBWorker;
 
 public class PurchaseItems {
 
-	private ArrayList<PurchaseItem> purchases;
+	private List<PurchaseItem> purchases;
 	private DBWorker database;
 	
 	public PurchaseItems(Context context){
@@ -21,7 +21,7 @@ public class PurchaseItems {
 	}
 	
 	// Must staing before adapter initialization. Cause - notifying that data set changing
-	public void add(ArrayList<Integer> productsIds){
+	public void add(List<Integer> productsIds){
 		database.writeToPurchases(productsIds);
 		purchases = database.readFromPurchases();
 	}
@@ -41,10 +41,10 @@ public class PurchaseItems {
 
 	
 	public int size(){
-		return purchases.size();
+        return purchases.size();
 	}
 
-	public PurchaseItem get(int index){
+	public PurchaseItem get(int index) {
 		return purchases.get(index);
 	}
 
@@ -65,14 +65,12 @@ public class PurchaseItems {
         return purchases.get(index);
     }
 	
-	public void delete(ArrayList<Integer> idsForDelete){
+	public void delete(List<Integer> idsForDelete){
 
         for(int ID : idsForDelete ){
             //TODO delete DB by id
             database.deleteFromPurchasesById(ID);
             purchases.remove(findIndexById(ID));
 		}
-		
 	}
-
 }

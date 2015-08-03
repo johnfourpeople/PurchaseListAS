@@ -1,6 +1,7 @@
 package ru.JB.develop.purchaselist.Database;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -17,9 +18,9 @@ public class DBUnits {
 		database = helper.getWritableDatabase();
 	}
 	
-	public ArrayList<String> readUnits(){
+	public List<String> readUnits(){
 		String sql = "SELECT * FROM "+ Contract.Unit.TABLE;
-		ArrayList<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<String>();
 		Cursor c = database.rawQuery(sql, null);
 		if (c != null) {
 			  if (c.moveToFirst()) {

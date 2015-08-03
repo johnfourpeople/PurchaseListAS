@@ -1,6 +1,7 @@
 package ru.JB.develop.purchaselist.Database;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ru.JB.develop.purchaselist.Model.ProductItem;
 import ru.JB.develop.purchaselist.Model.PurchaseItem;
@@ -24,7 +25,7 @@ public class DBWorker {
 
     private boolean nameExistProducts(String name){
         String[] selectionArgs = {name};
-		Cursor c = database.query(Contract.Products.TABLE, null, Contract.Products.NAME+ " = ?", selectionArgs, null, null, null);
+		Cursor c = database.query(Contract.Products.TABLE, null, Contract.Products.NAME + " = ?", selectionArgs, null, null, null);
         Log.d("debug db exist",String.valueOf(c.getCount()));
         return (c.getCount()>0);
     }
@@ -35,9 +36,9 @@ public class DBWorker {
         return (c.getCount()>0);
     }
 	
-	public ArrayList<ProductItem> readFromProducts(){
+	public List<ProductItem> readFromProducts(){
 		
-		ArrayList<ProductItem> items = new ArrayList<ProductItem>();
+		List<ProductItem> items = new ArrayList<ProductItem>();
 		
 		String sqlQuery = "SELECT * FROM "+ Contract.Products.TABLE +" JOIN "+ Contract.Unit.TABLE +
                 " ON "+ Contract.Products.TABLE +"."+ Contract.Products.UNIT_ID
@@ -63,13 +64,10 @@ public class DBWorker {
 		}
 		return items;
 	}
-	//TODO refactor methods of DB using( with ?)
-	public void deleteFromProductsByName(String productName){
-		database.delete(Contract.Products.TABLE, Contract.Products.NAME + " = '" + productName + "'", null);
-	}
-	
+
 	public void deleteFromProductsById(int id){
-		database.delete(Contract.Products.TABLE, Contract.Products._ID + " = " + id, null);
+		String[] whereArgs = {String.valueOf(id)};
+		database.delete(Contract.Products.TABLE, Contract.Products._ID + " =  ?", whereArgs);
 	}
 
 	public long writeToProducts(ProductItem product){
@@ -87,27 +85,13 @@ public class DBWorker {
         return -1;
 	}
 	
-	//TODO find alternative (method have one usage)
-	public int getProductId(String name){
-		String[] selectionArgs = {name};
-		String[] columns = {Contract.Products._ID};
-        Cursor c = database.query(Contract.Products.TABLE, columns, Contract.Products.NAME + " = ?", selectionArgs,null,null,null);
-        if (c != null){
-			 if (c.moveToFirst()){
-				 Integer indexID = c.getColumnIndex(Contract.Products._ID);
-				 return c.getInt(indexID);
-			 }
-		}
-		return -1;
-	}
-	
 	public void editProduct(int id, String newName,String newPrice){
 		ContentValues values = new ContentValues();
 		values.put(Contract.Products.NAME, newName);
 		values.put(Contract.Products.PRICE, newPrice);
 		String whereClause = Contract.Products._ID + " = ?";
 		String[] whereArgs = new String[] {String.valueOf(id)};
-		database.update(Contract.Products.TABLE, values, whereClause , whereArgs );
+		database.update(Contract.Products.TABLE, values, whereClause, whereArgs);
 	}
 	
 	public int writeToUnits(String newName){
@@ -120,7 +104,7 @@ public class DBWorker {
 	public int findUnitIdByName(String unitName){
         String[] selectionArgs = {unitName};
         String[] columns = {Contract.Unit._ID};
-        Cursor c = database.query(Contract.Unit.TABLE, columns, Contract.Unit.NAME +" = ?", selectionArgs, null, null, null);
+        Cursor c = database.query(Contract.Unit.TABLE, columns, Contract.Unit.NAME + " = ?", selectionArgs, null, null, null);
 
         if(c != null){
 			if(c.moveToFirst()){
@@ -131,9 +115,9 @@ public class DBWorker {
 		return -1;
 	}
 
-	public ArrayList<PurchaseItem> readFromPurchases(){
+	public List<PurchaseItem> readFromPurchases(){
 		
-		ArrayList<PurchaseItem> items = new ArrayList<PurchaseItem>();
+		List<PurchaseItem> items = new ArrayList<PurchaseItem>();
 		
 		String sqlQuery = "SELECT "+ Contract.Products.NAME +", "
                 + Contract.Purchase.NUMBER + ", " +
@@ -173,12 +157,8 @@ public class DBWorker {
         database.delete(Contract.Purchase.TABLE, Contract.Purchase.PRODUCT_ID + " = ?", whereArgs);
     }
 
-	public void deleteFormPurchases(String productName){
-        String[] whereArgs = {String.valueOf(getProductId(productName))};
-		database.delete(Contract.Purchase.TABLE, Contract.Products._ID + " = ?", whereArgs);
-	}
 
-	public void writeToPurchases(ArrayList<Integer> productsIds){
+	public void writeToPurchases(List<Integer> productsIds){
         ContentValues values = new ContentValues();
 		for(Integer prodId : productsIds){
             String[] selectionArgs = {String.valueOf(prodId)};
@@ -200,19 +180,17 @@ public class DBWorker {
                     database.update(Contract.Purchase.TABLE, values, whereClause, whereArgs);
                 }
             } else {
-
                 values.clear();
                 values.put(Contract.Purchase.NUMBER, 1);
                 values.put(Contract.Purchase.IS_BOUGHT, false);
                 values.put("ProductsId", prodId);
                 Long idd = database.insert(Contract.Purchase.TABLE, null, values);
-
             }
         }
     }
 
 	public void close(){
-		database.close();
+        database.close();
 	}
 
 

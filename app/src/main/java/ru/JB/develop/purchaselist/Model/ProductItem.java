@@ -10,24 +10,24 @@ public class ProductItem{
 	private String name;
 	private String unit;
 	private double price;
-	private long ID;
+	private long id;
 	
 	public ProductItem(String newName, double newPrice){
 		name = newName;
 		price = newPrice;
 	}
 	
-	public ProductItem(String newName, double newPrice, int id){
+	public ProductItem(String newName, double newPrice, int newId){
 		name = newName;
 		price = newPrice;
-		ID = id;
+		id = newId;
 	}
 	
-	public ProductItem(String newName, String newUnit, double newPrice, int id){
+	public ProductItem(String newName, String newUnit, double newPrice, int newId){
 		name = newName;
 		unit = newUnit;
 		price = newPrice;
-		ID = id;
+		id = newId;
 	}
 	
 	public ProductItem(String newName, String newUnit, double newPrice){
@@ -36,12 +36,12 @@ public class ProductItem{
 		price = newPrice;
 	}
 		
-	public final int getID(){
-		return (int)ID;
+	public final int getId(){
+		return (int)id;
 	}
 	
-	public void setID(long newID){
-		ID = newID;
+	public void setId(long newID){
+		id = newID;
 	}
 	
 	public String getName(){

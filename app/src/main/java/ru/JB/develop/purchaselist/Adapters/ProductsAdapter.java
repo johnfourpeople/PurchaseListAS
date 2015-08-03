@@ -1,6 +1,7 @@
 package ru.JB.develop.purchaselist.Adapters;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ru.JB.develop.purchaselist.*;
 import ru.JB.develop.purchaselist.Model.ProductItem;
@@ -34,11 +35,11 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 	int editionPosition = -1;
 	boolean editPriceFocused = false;
 	
-	ProductFilter filter = new ProductFilter();
+	Filter filter = new ProductFilter();
 	EditionSaver priceEditionSaver = new EditionSaver();
 	EditionSaver nameEditionSaver = new EditionSaver();
-	ArrayList<Integer> checkedProductIds = new ArrayList<Integer>();
-	ArrayList<ProductItem> filteredProducts = new ArrayList<ProductItem>();
+	List<Integer> checkedProductIds = new ArrayList<Integer>();
+	List<ProductItem> filteredProducts = new ArrayList<ProductItem>();
 	
 	
 	public ProductsAdapter(ProductItems items,Context context){
@@ -104,7 +105,7 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 		protected void publishResults(CharSequence constraint,
 				FilterResults results) {
 			filteredProducts = (ArrayList<ProductItem>) results.values;
-			notifyDataSetChanged();	
+			notifyDataSetChanged();
 		}
 	}
 	
@@ -122,12 +123,12 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 
 	@Override
 	public Object getItem(int position) {
-		return filteredProducts.get(position);
+        return filteredProducts.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		return position;	
+		return position;
 	}
 	
 	@Override
@@ -136,7 +137,9 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 	}
 	
 	@Override
-	public int getViewTypeCount() { return TYPE_MAX; }
+	public int getViewTypeCount() {
+        return TYPE_MAX;
+    }
 	
 	@Override
 	public View getView(int position, View rowView, ViewGroup parent) {
@@ -158,14 +161,14 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 			holder.viewProductName.setText(filteredProducts.get(position).getName());
 			holder.viewProductUnit.setText(filteredProducts.get(position).getUnit());
 			holder.viewProductPrice.setText(filteredProducts.get(position).getFormatedPrice());
-			holder.checkProduct.setTag(filteredProducts.get(position).getID());
+			holder.checkProduct.setTag(filteredProducts.get(position).getId());
 			holder.checkProduct.setOnClickListener(this);
 			if(checking){
 				holder.checkProduct.setVisibility(View.VISIBLE);
 			} else {
 				holder.checkProduct.setVisibility(View.GONE);
 			}
-			holder.checkProduct.setChecked(checkedProductIds.contains(filteredProducts.get(position).getID()));
+			holder.checkProduct.setChecked(checkedProductIds.contains(filteredProducts.get(position).getId()));
 			break;
 		case EDIT_ITEM:
 			//TODO make save button on soft keyboard
@@ -219,34 +222,30 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 			} else {
 				editName.requestFocus();
 			}
-			
 			break;
 		}
 		return rowView;
-	}		
-	
+	}
+
 	@Override
 	public void onClick(View v) {
-		Boolean isChecked = ((CheckBox) v).isChecked();
+	    Boolean isChecked = ((CheckBox) v).isChecked();
 		if(isChecked){
 			checkedProductIds.add((Integer) v.getTag());
 		}
 		else{
 			checkedProductIds.remove((Integer) v.getTag());
-			checkedProductIds.trimToSize();
-		}	
+		}
 	}
-	
 
 	public void onItemEdition(int position) {
-        Log.d("debug ", String.valueOf(position));
-		editionPosition = position;
+        editionPosition = position;
 		notifyDataSetChanged();
 	}
 		
 	public void saveEdition(){
 		filteredProducts.get(editionPosition).setName(nameEditionSaver.getCurrentText());
-		products.edit(filteredProducts.get(editionPosition).getID(),nameEditionSaver.getCurrentText(),priceEditionSaver.getCurrentText());
+		products.edit(filteredProducts.get(editionPosition).getId(),nameEditionSaver.getCurrentText(),priceEditionSaver.getCurrentText());
 		editionPosition = -1;
         nameEditionSaver.reset();
         priceEditionSaver.reset();
@@ -262,7 +261,7 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 	
 	@Override
 	public Filter getFilter() {
-		return filter;
+        return filter;
 	}
 	
 	public void getOrHideCheckBox(){
@@ -292,8 +291,8 @@ public class ProductsAdapter extends BaseAdapter implements   OnClickListener, F
 		}
 	}	
 	//TODO fix checkbox
-	public ArrayList<Integer> getCheckedProductsId(){
-			return checkedProductIds;
+	public List<Integer> getCheckedProductsId(){
+        return checkedProductIds;
 	}
 	
 	public boolean addProduct(String newProductName, String unit , double newProductPrice){
