@@ -10,90 +10,86 @@ import android.util.Log;
 
 import ru.JB.develop.purchaselist.Database.DBWorker;
 
-public class ProductItems  {
+public class ProductItems {
 
-	private List<ProductItem> products;
-	private DBWorker database;
-	
-	public ProductItems(Context context){
-		database = new DBWorker(context);
-		products = database.readFromProducts();
-		for(ProductItem product : products){
-			Log.d("debug id ProductItems constructor", String.valueOf(product.getId()));
-		}
-	}
-	
-	public int size(){
-		return products.size();
-	}
-	
-	// refactor delete purchases with no existing Id 
+    private List<ProductItem> products;
+    private DBWorker database;
 
-	public int findIndexOfProductById(Integer id){
-		Log.d("debug items id",id.toString());
-		Comparator<ProductItem> comparator = new Comparator<ProductItem>(){
+    public ProductItems(Context context) {
+        database = new DBWorker(context);
+        products = database.readFromProducts();
+    }
 
-			@Override
-			public int compare(ProductItem prod0, ProductItem prod1) {
-				return prod0.getId()-prod1.getId();
-			}
-			
-		};
-		Collections.sort(products, comparator);
-		int index = Collections.binarySearch(products, new ProductItem("", 0, id), comparator);
-		Log.d("debug items index", String.valueOf(index));
-		return index;
-	}
-	
-	public void deleteItemById(int idForDelete){
-		int index = findIndexOfProductById(idForDelete);
-		if (index >= 0){
-			products.remove(index);
-			database.deleteFromProductsById(idForDelete);
-		}
-	}
-	
-	// refactor
-	public ProductItem add(ProductItem newItem){
-		long ID = database.writeToProducts(newItem);
-		newItem.setId(ID);
-		Log.d("debug ProductItems item added with id= ", String.valueOf(ID));
-		if(ID > 0){
+    public int size() {
+        return products.size();
+    }
+
+    // refactor delete purchases with no existing Id
+
+    public int findIndexOfProductById(Integer id) {
+        Log.d("debug items id",id.toString());
+        Comparator<ProductItem> comparator = new Comparator<ProductItem>() {
+
+            @Override
+            public int compare(ProductItem prod0, ProductItem prod1) {
+                return prod0.getId()-prod1.getId();
+            }
+        };
+        Collections.sort(products, comparator);
+        int index = Collections.binarySearch(products,
+                new ProductItem("", 0, id), comparator);
+        Log.d("debug items index", String.valueOf(index));
+        return index;
+    }
+
+    public void deleteItemById(int idForDelete) {
+        int index = findIndexOfProductById(idForDelete);
+        if (index >= 0) {
+            products.remove(index);
+            database.deleteFromProductsById(idForDelete);
+        }
+    }
+
+    // refactor
+    public ProductItem add(ProductItem newItem) {
+        long ID = database.writeToProducts(newItem);
+        newItem.setId(ID);
+        if (ID > 0) {
             products.add(newItem);
             return newItem;
         }
-
         return null;
-	}
+    }
 
-	public void edit(int id, String newName, String newPrice){
-		int index = findIndexOfProductById(id);
-		Log.d("debug ProductItem edit index = ", String.valueOf(index));
-		if(index <0)
-			return;
-		products.get(index).setName(newName);
-		products.get(index).setFormatedPrice(newPrice);
-		database.editProduct(id, newName, String.valueOf(products.get(index).getPrice()));
-	}
-	
-	public List<ProductItem> getAll(){
-		List<ProductItem> copyProducts = new ArrayList<ProductItem>();
-		Comparator<ProductItem> comparatorByName = new Comparator<ProductItem>(){
-			@Override
-			public int compare(ProductItem lhs, ProductItem rhs) {
-				return lhs.getName().compareTo(rhs.getName());
-			}	
-		};
-		copyProducts.addAll(products);
-		Collections.sort(copyProducts, comparatorByName);
-		return copyProducts;
-	}
-	
-	public ProductItem get(int index){
-		return products.get(index);
-	}
+    public void edit(int id, String newName, String newPrice) {
+        int index = findIndexOfProductById(id);
+        if (index <0) {
+            return;
+        }
+        products.get(index).setName(newName);
+        products.get(index).setFormatedPrice(newPrice);
+        database.editProduct(id, newName,
+                String.valueOf(products.get(index).getPrice()));
+    }
 
-	public void close(){
-		database.close();
-	}
+    public List<ProductItem> getAll() {
+        List<ProductItem> copyProducts = new ArrayList<ProductItem>();
+        Comparator<ProductItem> comparatorByName = new Comparator<ProductItem>() {
+            @Override
+            public int compare(ProductItem lhs, ProductItem rhs) {
+                return lhs.getName().compareTo(rhs.getName());
+            }
+        };
+        copyProducts.addAll(products);
+        Collections.sort(copyProducts, comparatorByName);
+        return copyProducts;
+    }
+
+    public ProductItem get(int index) {
+        return products.get(index);
+    }
+
+    public void close() {
+        database.close();
+    }
 }
