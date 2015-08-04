@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.JB.develop.purchaselist.Adapters.PurchaseAdapter;
@@ -31,6 +32,15 @@ public class PurchaseFragment extends Fragment {
 
     PurchaseItems purchases;
     PurchaseAdapter adapter;
+
+    public static PurchaseFragment newInstance(ArrayList<Integer> newPurchases) {
+        PurchaseFragment purchaseFragment = new PurchaseFragment();
+
+        Bundle args = new Bundle();
+        args.putIntegerArrayList("PurchaseProductIds", newPurchases);
+        purchaseFragment.setArguments(args);
+        return purchaseFragment;
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -64,9 +74,10 @@ public class PurchaseFragment extends Fragment {
 
         if (getArguments() != null) {
             PurchasesId = getArguments().getIntegerArrayList("PurchaseProductIds");
-        }
-        if (PurchasesId != null) {
-            purchases.add(PurchasesId);
+            if (PurchasesId != null) {
+                purchases.add(PurchasesId);
+            }
+            getArguments().clear();
         }
     }
 

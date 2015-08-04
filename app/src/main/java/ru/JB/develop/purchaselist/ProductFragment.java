@@ -212,14 +212,12 @@ public class ProductFragment extends Fragment implements View.OnClickListener {
         case Add:
             //TODO getting just other fragment will optimize it?
 
-            Bundle args = new Bundle();
-            args.putIntegerArrayList("PurchaseProductIds",
-                    (ArrayList<Integer>) adapter.getCheckedProductsId());
+
             doneCancelLayout.setVisibility(View.GONE);
             adapter.hideCheckBox();
             action = Actions.None;
-            PurchaseFragment purchaseFragment = new PurchaseFragment();
-            purchaseFragment.setArguments(args);
+            PurchaseFragment purchaseFragment = PurchaseFragment.newInstance(
+                    (ArrayList<Integer>) adapter.getCheckedProductsId());
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.container,
                     purchaseFragment).addToBackStack(null).commit();
