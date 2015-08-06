@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import android.content.Context;
 import android.util.Log;
 
 import ru.JB.develop.purchaselist.Database.DBWorker;
 
-public class PurchaseItems {
+public class PurchaseItems implements Observer{
+
+    final String TAG = "PurchaseItems";
 
     private List<PurchaseItem> purchases;
     private DBWorker database;
@@ -20,7 +24,7 @@ public class PurchaseItems {
         purchases = database.readFromPurchases();
     }
 
-    // Must staing before adapter initialization.
+    // Must staying before adapter initialization.
     // Cause - notifying that data set changing
     public void add(List<Integer> productsIds) {
         database.writeToPurchases(productsIds);
@@ -72,5 +76,10 @@ public class PurchaseItems {
             database.deleteFromPurchasesById(ID);
             purchases.remove(findIndexById(ID));
         }
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+        
     }
 }

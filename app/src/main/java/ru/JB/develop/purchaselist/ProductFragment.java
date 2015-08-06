@@ -64,7 +64,15 @@ public class ProductFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+
         inflater.inflate(R.menu.products, menu);
+        Log.d(TAG, String.valueOf(action));
+        if(!action.equals(Actions.None)){
+            menu.findItem(R.id.action_add_to_purchase).setVisible(false);
+            menu.findItem(R.id.action_add).setVisible(false);
+            menu.findItem(R.id.action_delete).setVisible(false);
+            menu.findItem(R.id.action_settings).setVisible(false);
+        }
 
         SearchManager searchManager = (SearchManager)
                 mActivity.getSystemService(Context.SEARCH_SERVICE);
@@ -74,21 +82,20 @@ public class ProductFragment extends Fragment implements View.OnClickListener {
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(
                     mActivity.getComponentName()));
-            SearchView.OnQueryTextListener queryTextListener
-                    = new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return false;
-                }
+            searchView.setOnQueryTextListener(
+                    new SearchView.OnQueryTextListener() {
 
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    Log.d(TAG,"query changed");
-                    adapter.getFilter().filter(newText);
-                    return false;
-                }
-            };
-            searchView.setOnQueryTextListener(queryTextListener);
+                        @Override
+                        public boolean onQueryTextSubmit(String query) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String newText) {
+                            adapter.getFilter().filter(newText);
+                            return false;
+                        }
+                    });
         }
     }
 
@@ -105,19 +112,21 @@ public class ProductFragment extends Fragment implements View.OnClickListener {
                 return true;
             case R.id.action_delete:
                 onDeleteMenuButtonClick();
+                getActivity().invalidateOptionsMenu();
                 return true;
             case R.id.action_add:
                 //TODO interaction of fragments must be maden by Activity
                 Bundle args = new Bundle();
                 addProductDialog.setArguments(args);
-                addProductDialog.setTargetFragment(this,0);
-
-                addProductDialog.show(getFragmentManager(),"Add Product Dialog");
+                addProductDialog.setTargetFragment(this, 0);
+                addProductDialog.show(getFragmentManager(), "Add Product Dialog");
                 return true;
             case R.id.action_add_to_purchase:
                 onAddMenuButtonClick();
+                getActivity().invalidateOptionsMenu();
                 return true;
         }
+        getActivity().invalidateOptionsMenu();
         return super.onOptionsItemSelected(item);
     }
 
@@ -171,6 +180,7 @@ public class ProductFragment extends Fragment implements View.OnClickListener {
                 action = Actions.Edit;
                 acceptProductActionButton.setText(getString(R.string.save_product_edition));
                 doneCancelLayout.setVisibility(View.VISIBLE);
+                getActivity().invalidateOptionsMenu();
                 return true;
             }
         });
@@ -180,15 +190,20 @@ public class ProductFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.accept_product_action:
-            processingMenuAction(action);
+            processingMenuAction();
+            getActivity().invalidateOptionsMenu();
             break;
         case R.id.cancel_product_action:
             doneCancelLayout.setVisibility(View.GONE);
             if (action == Actions.Edit) {
                 adapter.cancelEdition();
+                action = Actions.None;
+                getActivity().invalidateOptionsMenu();
                 return;
             }
             adapter.hideCheckBox();
+            action = Actions.None;
+            getActivity().invalidateOptionsMenu();
             break;
         }
     }
@@ -207,11 +222,10 @@ public class ProductFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void processingMenuAction(Actions action) {
+    private void processingMenuAction() {
         switch (action) {
         case Add:
             //TODO getting just other fragment will optimize it?
-
 
             doneCancelLayout.setVisibility(View.GONE);
             adapter.hideCheckBox();
