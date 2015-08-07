@@ -33,6 +33,7 @@ public class ProductsAdapter extends BaseAdapter implements OnClickListener,
     private static final int EDIT_ITEM = 1;
     private static final int TYPE_MAX = EDIT_ITEM + 1;
 
+    private static String TAG = "Products adapter";
     ProductItems products;
     Context context;
     boolean checking = false;
@@ -312,16 +313,26 @@ public class ProductsAdapter extends BaseAdapter implements OnClickListener,
         return checkedProductIds;
 	}
 
-    public boolean addProduct(String newProductName, String unit ,
-                              double newProductPrice){
-        ProductItem newProduct = products.add(
+    public int addProduct(String newProductName, String unit ,
+                              double newProductPrice) {
+        int id = products.add(
                 new ProductItem(newProductName, unit, newProductPrice));
-        if (newProduct != null) {
+        Log.d(TAG, String.valueOf(id));
+        if (id > 0) {
             filteredProducts.clear();
             filteredProducts.addAll(products.getAll());
             notifyDataSetChanged();
-            return true;
+            return getPositionById(id);
         }
-        return false;
+        return -getPositionById(id);
+    }
+
+    private int getPositionById(int id){
+        for (int pos = 0; pos <= filteredProducts.size(); pos++) {
+            if (filteredProducts.get(pos).getId() == Math.abs(id)) {
+                return pos;
+            }
+        }
+        return 0;
     }
 }

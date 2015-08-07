@@ -51,14 +51,13 @@ public class ProductItems {
     }
 
     // refactor
-    public ProductItem add(ProductItem newItem) {
-        long ID = database.writeToProducts(newItem);
-        newItem.setId(ID);
-        if (ID > 0) {
+    public int add(ProductItem newItem) {
+        int id = database.writeToProducts(newItem);
+        if (id > 0) {
+            newItem.setId(id);
             products.add(newItem);
-            return newItem;
         }
-        return null;
+        return id;
     }
 
     public void edit(int id, String newName, String newPrice) {

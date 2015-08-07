@@ -13,6 +13,8 @@ import android.util.Log;
 
 public class DBWorker {
 
+    private String TAG = "DBWorker";
+
     DBHelper helper;
     SQLiteDatabase database;
 
@@ -36,6 +38,21 @@ public class DBWorker {
                 Contract.Purchase.PRODUCT_ID + " = ?", selectionArgs,
                 null, null, null);
         return (c.getCount()>0);
+    }
+
+    public int getIdByName(String name) {
+
+        String[] selectionArgs = {name};
+        Cursor c = database.query(Contract.Products.TABLE, null,
+                Contract.Products.NAME + " = ?", selectionArgs, null,
+                null, null);
+        if (c != null) {
+            if (c.moveToFirst()) {
+                int indexId = c.getColumnIndex(Contract.Products._ID);
+                return -c.getInt(indexId);
+            }
+        }
+        return 1;
     }
 
     public List<ProductItem> readFromProducts() {
@@ -72,8 +89,10 @@ public class DBWorker {
                 + " =  ?", whereArgs);
     }
 
-    public long writeToProducts(ProductItem product) {
-        if (!nameExistProducts(product.getName())) {
+    public int writeToProducts(ProductItem product) {
+        int existingId = getIdByName(product.getName());
+        Log.d(TAG, String.valueOf(existingId));
+        if (existingId > 0) {
             ContentValues values = new ContentValues();
             values.put(Contract.Products.NAME, product.getName());
             values.put(Contract.Products.PRICE, product.getPrice());
@@ -82,10 +101,9 @@ public class DBWorker {
                 unitId = writeToUnits(product.getUnit());
             }
             values.put(Contract.Products.UNIT_ID, unitId);
-            long id = database.insert(Contract.Products.TABLE, null, values);
-            return id;
+            return (int)database.insert(Contract.Products.TABLE, null, values);
         }
-        return -1;
+        return existingId;
     }
 
     public void editProduct(int id, String newName,String newPrice) {

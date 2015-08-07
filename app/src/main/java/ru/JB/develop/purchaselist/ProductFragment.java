@@ -212,13 +212,15 @@ public class ProductFragment extends Fragment implements View.OnClickListener {
             String newProductName, String newProductUnit,
             double newProductPrice) {
         if (isConfirmed) {
-            boolean isAdded = adapter.addProduct(newProductName,
+            int pos = adapter.addProduct(newProductName,
                     newProductUnit, newProductPrice);
-            if (!isAdded) {
+            Log.d(TAG, String.valueOf(pos));
+            if (pos < 0) {
                 Toast notAddedMessage = Toast.makeText(getActivity(),
                         R.string.add_error,Toast.LENGTH_LONG);
                 notAddedMessage.show();
             }
+            productList.setSelection(pos);
         }
     }
 
