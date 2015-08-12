@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -44,10 +45,8 @@ public class ProductFragment extends Fragment implements View.OnClickListener {
     Actions action = Actions.None;
 
     ListView productList;
-    EditText newProduct;
 
-    RelativeLayout doneCancelLayout;
-    Button addProductButton;
+    ViewGroup doneCancelLayout;
     Button acceptProductActionButton;
     Button cancelToPurchaseButton;
     ProductItems products;
@@ -78,6 +77,7 @@ public class ProductFragment extends Fragment implements View.OnClickListener {
                 mActivity.getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView)
                 menu.findItem(R.id.search_item_id).getActionView();
+        searchView.setQueryHint(getString(R.string.search_hint));
 
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(
@@ -152,13 +152,8 @@ public class ProductFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
 
         productList = (ListView) view.findViewById(R.id.purchaseList);
-        newProduct = (EditText) view.findViewById(R.id.newProduct);
-
-        doneCancelLayout = (RelativeLayout)
+        doneCancelLayout = (ViewGroup)
                 view.findViewById(R.id.done_cancel_id);
-
-        addProductButton = (Button) view.findViewById(R.id.searchProduct);
-        addProductButton.setOnClickListener(this);
 
         acceptProductActionButton = (Button)
                 view.findViewById(R.id.accept_product_action);
@@ -215,6 +210,7 @@ public class ProductFragment extends Fragment implements View.OnClickListener {
             int pos = adapter.addProduct(newProductName,
                     newProductUnit, newProductPrice);
             Log.d(TAG, String.valueOf(pos));
+            //TODO check is working
             if (pos < 0) {
                 Toast notAddedMessage = Toast.makeText(getActivity(),
                         R.string.add_error,Toast.LENGTH_LONG);

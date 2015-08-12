@@ -53,7 +53,7 @@ public class AddProductDialog extends DialogFragment implements OnClickListener 
         builder.setContentView(v);
         builder.getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        builder.setTitle("Add Product");
+        builder.setTitle(getString(R.string.add_product));
         return builder;
     }
 
