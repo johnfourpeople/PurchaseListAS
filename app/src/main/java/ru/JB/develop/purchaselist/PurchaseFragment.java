@@ -3,8 +3,10 @@ package ru.JB.develop.purchaselist;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.JB.develop.purchaselist.Adapters.PurchaseAdapter;
+import ru.JB.develop.purchaselist.Dialogs.AddPurchaseDialog;
 import ru.JB.develop.purchaselist.Model.PurchaseItems;
 
 /**
@@ -25,6 +28,8 @@ import ru.JB.develop.purchaselist.Model.PurchaseItems;
 public class PurchaseFragment extends Fragment {
 
     boolean deleting = false;
+
+    DialogFragment addPurchaseDialog;
 
     ListView purchaseList;
     Activity mActivity;
@@ -68,6 +73,9 @@ public class PurchaseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        addPurchaseDialog = new AddPurchaseDialog();
+
         setHasOptionsMenu(true);
 
         purchases = new PurchaseItems(getActivity());
@@ -102,6 +110,10 @@ public class PurchaseFragment extends Fragment {
         switch (id) {
         case R.id.action_settings:
             return true;
+        case R.id.action_add_purchase:
+            addPurchaseDialog.setTargetFragment(this, 0);
+            addPurchaseDialog.show(getFragmentManager(), getString(R.string.action_add_to_purchase));
+                return true;
         case R.id.action_add:
             getToProducts();
             return true;

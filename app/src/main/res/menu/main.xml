@@ -20,4 +20,8 @@
         app:showAsAction="always"
         android:icon="@drawable/delete"
         android:title="@string/action_delete"/>
+    <item
+        android:id="@+id/action_add_purchase"
+        android:title="@string/action_add_to_purchase"
+        />
 </menu>
