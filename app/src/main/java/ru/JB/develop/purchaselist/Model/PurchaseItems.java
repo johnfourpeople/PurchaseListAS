@@ -12,7 +12,7 @@ import android.util.Log;
 
 import ru.JB.develop.purchaselist.Database.DBWorker;
 
-public class PurchaseItems implements Observer{
+public class PurchaseItems {
 
     final String TAG = "PurchaseItems";
 
@@ -62,7 +62,7 @@ public class PurchaseItems implements Observer{
         };
         Collections.sort(purchases, comparator);
         return Collections.binarySearch(purchases,
-                new PurchaseItem(1,"",1,true, id),comparator);
+                new PurchaseItem(1, "", true, id),comparator);
     }
 
     public PurchaseItem getById(int id) {
@@ -78,8 +78,4 @@ public class PurchaseItems implements Observer{
         }
     }
 
-    @Override
-    public void update(Observable observable, Object data) {
-        
-    }
 }

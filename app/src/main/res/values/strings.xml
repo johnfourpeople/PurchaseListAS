@@ -28,5 +28,6 @@
     </string-array>
     <string name="search_label">Search</string>
     <string name="add_error">This product is exist</string>
+    <string name="browse">Browse</string>
 
 </resources>

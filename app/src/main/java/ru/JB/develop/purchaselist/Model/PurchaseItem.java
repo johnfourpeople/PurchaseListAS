@@ -4,14 +4,12 @@ public class PurchaseItem {
 
     private int id;
     private int productId;
-    private int numberOfPurchases;
-    private String purchaseName;
+   private String purchaseName;
     private boolean purchaseIsBought;
 
-    public PurchaseItem(int newId, String newName, Integer newNumber, Boolean isBought, int newProductId) {
+    public PurchaseItem(int newId, String newName,  Boolean isBought, int newProductId) {
         id = newId;
         purchaseName = newName;
-        numberOfPurchases = newNumber;
         purchaseIsBought = isBought;
         productId = newProductId;
     }
@@ -38,14 +36,6 @@ public class PurchaseItem {
 
     public String getPurchaseName() {
         return purchaseName;
-    }
-
-    public void setNumberOfPurchases(int newNumber) {
-        numberOfPurchases = newNumber;
-    }
-
-    public int getNumberOfPurchases() {
-        return numberOfPurchases;
     }
 
     public boolean getPurchaseIsBought() {

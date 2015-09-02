@@ -67,7 +67,7 @@ public class ProductsAdapter extends BaseAdapter implements OnClickListener,
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before,
-                int count){}
+                int count) {}
 
         void reset(){
             currentText = null;
@@ -114,8 +114,6 @@ public class ProductsAdapter extends BaseAdapter implements OnClickListener,
 
     private static class ViewHolder{
         TextView viewProductName;
-        TextView viewProductUnit;
-        TextView viewProductPrice;
         CheckBox checkProduct;
     }
 
@@ -156,10 +154,6 @@ public class ProductsAdapter extends BaseAdapter implements OnClickListener,
                     holder = new ViewHolder();
                     holder.viewProductName = (TextView)
                             rowView.findViewById(R.id.viewProductName);
-                    holder.viewProductUnit = (TextView)
-                            rowView.findViewById(R.id.productUnit);
-                    holder.viewProductPrice = (TextView)
-                            rowView.findViewById(R.id.productPrice);
                     holder.checkProduct = (CheckBox)
                             rowView.findViewById(R.id.checkProduct);
                     rowView.setTag(holder);
@@ -168,10 +162,6 @@ public class ProductsAdapter extends BaseAdapter implements OnClickListener,
             }
             holder.viewProductName.setText(
                     filteredProducts.get(position).getName());
-            holder.viewProductUnit.setText(
-                    filteredProducts.get(position).getUnit());
-            holder.viewProductPrice.setText(
-                    filteredProducts.get(position).getFormatedPrice());
             holder.checkProduct.setTag(
                     filteredProducts.get(position).getId());
             holder.checkProduct.setOnClickListener(this);
@@ -192,8 +182,6 @@ public class ProductsAdapter extends BaseAdapter implements OnClickListener,
 
             EditText editName = (EditText)
                     rowView.findViewById(R.id.editProductName);
-            EditText editPrice = (EditText)
-                    rowView.findViewById(R.id.editProductPrice);
 
             editName.setText(filteredProducts.get(position).getName());
             editName.addTextChangedListener(nameEditionSaver);
@@ -213,30 +201,7 @@ public class ProductsAdapter extends BaseAdapter implements OnClickListener,
                 }
 
             });
-
-            editPrice.setText(
-                    filteredProducts.get(position).getFormatedPrice());
-            editPrice.addTextChangedListener(priceEditionSaver);
-
-            if (priceEditionSaver.currentText == null) {
-                priceEditionSaver.currentText = editPrice.getText().toString();
-            } else {
-                editPrice.setText(priceEditionSaver.getCurrentText());
-            }
-            editPrice.setSelection(editPrice.getText().length());
-            editPrice.setOnFocusChangeListener(new OnFocusChangeListener(){
-
-                @Override
-                public void onFocusChange(View arg0, boolean hasFocus) {
-                    editPriceFocused = !hasFocus;
-                }
-            });
-
-            if (editPriceFocused) {
-                editPrice.requestFocus();
-            } else {
-                editName.requestFocus();
-            }
+            editName.requestFocus();
             break;
         }
         return rowView;
@@ -261,8 +226,7 @@ public class ProductsAdapter extends BaseAdapter implements OnClickListener,
         filteredProducts.get(editionPosition).setName(
                 nameEditionSaver.getCurrentText());
         products.edit(filteredProducts.get(editionPosition).getId(),
-                nameEditionSaver.getCurrentText(),
-                priceEditionSaver.getCurrentText());
+                nameEditionSaver.getCurrentText());
 
         editionPosition = -1;
         nameEditionSaver.reset();
@@ -313,10 +277,9 @@ public class ProductsAdapter extends BaseAdapter implements OnClickListener,
         return checkedProductIds;
 	}
 
-    public int addProduct(String newProductName, String unit ,
-                              double newProductPrice) {
+    public int addProduct(String newProductName) {
         int id = products.add(
-                new ProductItem(newProductName, unit, newProductPrice));
+                new ProductItem(newProductName));
         Log.d(TAG, String.valueOf(id));
         if (id > 0) {
             filteredProducts.clear();

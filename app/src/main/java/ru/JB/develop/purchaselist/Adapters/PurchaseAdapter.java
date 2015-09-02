@@ -81,8 +81,6 @@ public class PurchaseAdapter extends BaseAdapter implements OnClickListener {
             holder = new ViewHolder();
             holder.purchaseName = (TextView)
                     rowView.findViewById(R.id.purchaseName);
-            holder.numberOfPurchase = (TextView)
-                    rowView.findViewById(R.id.numberOfPurchase);
             holder.purchaseIsBought = (CheckBox)
                     rowView.findViewById(R.id.purchaseIsBought);
             rowView.setTag(holder);
@@ -91,8 +89,6 @@ public class PurchaseAdapter extends BaseAdapter implements OnClickListener {
         }
 
         holder.purchaseName.setText(viewItems.get(index).getPurchaseName());
-        holder.numberOfPurchase.setText(String.valueOf(
-                viewItems.get(index).getNumberOfPurchases()));
         holder.purchaseIsBought.setTag(viewItems.get(index).getProductId());
         holder.purchaseIsBought.setOnClickListener(this);
 

@@ -73,7 +73,6 @@ public class PurchaseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         addPurchaseDialog = new AddPurchaseDialog();
 
         setHasOptionsMenu(true);
@@ -89,34 +88,20 @@ public class PurchaseFragment extends Fragment {
         }
     }
 
-    private void getToProducts() {
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container,
-                new ProductFragment()).addToBackStack(null).commit();
-    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.main, menu);
-        if (deleting) {
-            menu.findItem(R.id.action_add).setVisible(false);
-        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-        case R.id.action_settings:
-            return true;
         case R.id.action_add_purchase:
             addPurchaseDialog.setTargetFragment(this, 0);
             addPurchaseDialog.show(getFragmentManager(), getString(R.string.action_add_to_purchase));
                 return true;
-        case R.id.action_add:
-            getToProducts();
-            return true;
         case R.id.action_delete:
             deleting = !deleting;
             if (deleting) {

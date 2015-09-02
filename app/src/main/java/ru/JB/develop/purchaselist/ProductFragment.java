@@ -204,11 +204,9 @@ public class ProductFragment extends Fragment implements View.OnClickListener {
     }
 
     public void onAddToProductDialogConfirmed(boolean isConfirmed,
-            String newProductName, String newProductUnit,
-            double newProductPrice) {
+            String newProductName) {
         if (isConfirmed) {
-            int pos = adapter.addProduct(newProductName,
-                    newProductUnit, newProductPrice);
+            int pos = adapter.addProduct(newProductName);
             Log.d(TAG, String.valueOf(pos));
             //TODO check is working
             if (pos < 0) {

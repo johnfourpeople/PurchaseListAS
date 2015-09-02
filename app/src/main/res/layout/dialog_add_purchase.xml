@@ -15,18 +15,25 @@
             android:text="@string/product_name"
             android:labelFor="@+id/new_purchase_name"
             android:layout_weight="1"/>
-        <EditText
+        <AutoCompleteTextView
             android:id="@id/new_purchase_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:inputType="text"
             android:layout_weight="2"/>
     </LinearLayout>
+    <Button
+        android:id="@+id/browse_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/browse"
+        android:layout_below="@id/new_purchase_name_line"
+        android:layout_alignParentRight="true"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/new_purchase_name_line"
+        android:layout_below="@id/browse_product"
         style= "?android:attr/buttonBarStyle">
         <Button
             android:id="@+id/add_new_purchase"

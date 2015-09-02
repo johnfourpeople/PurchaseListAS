@@ -37,7 +37,7 @@ public class ProductItems {
         };
         Collections.sort(products, comparator);
         int index = Collections.binarySearch(products,
-                new ProductItem("", 0, id), comparator);
+                new ProductItem("", id), comparator);
         Log.d("debug items index", String.valueOf(index));
         return index;
     }
@@ -60,15 +60,13 @@ public class ProductItems {
         return id;
     }
 
-    public void edit(int id, String newName, String newPrice) {
+    public void edit(int id, String newName) {
         int index = findIndexOfProductById(id);
         if (index <0) {
             return;
         }
         products.get(index).setName(newName);
-        products.get(index).setFormatedPrice(newPrice);
-        database.editProduct(id, newName,
-                String.valueOf(products.get(index).getPrice()));
+        database.editProduct(id, newName);
     }
 
     public List<ProductItem> getAll() {
@@ -81,6 +79,15 @@ public class ProductItems {
         };
         copyProducts.addAll(products);
         Collections.sort(copyProducts, comparatorByName);
+        return copyProducts;
+    }
+
+    public List<String> getProductNames() {
+        List<String> copyProducts = new ArrayList<>();
+        for (ProductItem product : products ) {
+            copyProducts.add(product.getName());
+            Log.d("     ", product.getName());
+        }
         return copyProducts;
     }
 

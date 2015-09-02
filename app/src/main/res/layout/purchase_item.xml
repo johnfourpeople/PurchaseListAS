@@ -11,14 +11,6 @@
  		android:minHeight="40dp"
  		android:layout_weight="5"
  		android:text=""/>
- 	<TextView
- 		android:id="@+id/numberOfPurchase"
- 		android:layout_width="wrap_content"
- 		android:layout_height="wrap_content"	
- 		android:gravity="center_vertical"
- 		android:minHeight="40dp"
- 		android:layout_weight="3"
- 		android:text=""/>
  	<CheckBox
  		android:id="@+id/purchaseIsBought"
  		android:layout_width="wrap_content"
