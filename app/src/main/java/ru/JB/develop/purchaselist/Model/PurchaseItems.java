@@ -32,15 +32,7 @@ public class PurchaseItems {
     }
 
     public List<PurchaseItem> getAll() {
-        List<PurchaseItem> copyPurchases = new ArrayList<>();
-        Comparator<PurchaseItem> comparatorByName = new Comparator<PurchaseItem>() {
-            @Override
-            public int compare(PurchaseItem lhs, PurchaseItem rhs) {
-                return lhs.getPurchaseName().compareTo(rhs.getPurchaseName());
-            }
-        };
-        copyPurchases.addAll(purchases);
-        Collections.sort(copyPurchases, comparatorByName);
+        List<PurchaseItem> copyPurchases = new ArrayList<>(purchases);
         return copyPurchases;
     }
 

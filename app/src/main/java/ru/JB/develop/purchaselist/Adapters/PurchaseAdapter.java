@@ -1,6 +1,8 @@
 package ru.JB.develop.purchaselist.Adapters;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import ru.JB.develop.purchaselist.Model.PurchaseItem;
@@ -24,18 +26,18 @@ public class PurchaseAdapter extends BaseAdapter implements OnClickListener {
     List<PurchaseItem> viewItems;
     Context context;
     boolean deleting = false;
+    Comparator<PurchaseItem> purchaseComparator = new PurchaseComparator();
     List<Integer> idsForDelete = new ArrayList<Integer>();
-    List<Integer> checkedIds = new ArrayList<Integer>();
 
     public PurchaseAdapter(PurchaseItems items, Context cntxt) {
         purchases = items;
         context = cntxt;
         viewItems = purchases.getAll();
+        Collections.sort(viewItems, purchaseComparator);
     }
 
          static class ViewHolder {
                 TextView purchaseName;
-                TextView numberOfPurchase;
                 CheckBox purchaseIsBought;
          }
 
@@ -99,7 +101,7 @@ public class PurchaseAdapter extends BaseAdapter implements OnClickListener {
         } else {
             holder.purchaseIsBought.setChecked(
                     viewItems.get(index).getPurchaseIsBought());
-            holder.purchaseIsBought.setBackgroundResource(R.color.Transparent);
+            rowView.setBackgroundResource((viewItems.get(index).getPurchaseIsBought()?R.color.disabled:R.color.Transparent));
         }
         return rowView;
     }
@@ -114,9 +116,21 @@ public class PurchaseAdapter extends BaseAdapter implements OnClickListener {
                 idsForDelete.remove(arg0.getTag());
             }
         } else {
-            purchases.getById((Integer)
-                    arg0.getTag()).setPurchaseIsBought(isChecked);
+            purchases.getById((Integer)arg0.getTag()).setPurchaseIsBought(isChecked);
+            Collections.sort(viewItems, purchaseComparator);
         }
         notifyDataSetChanged();
+    }
+
+    private class PurchaseComparator implements Comparator<PurchaseItem> {
+        @Override
+        public int compare(PurchaseItem lhs, PurchaseItem rhs) {
+            int result;
+            result = ((Boolean)lhs.getPurchaseIsBought()).compareTo(rhs.getPurchaseIsBought());
+            if (result == 0 ){
+                result = lhs.getPurchaseName().compareTo(rhs.getPurchaseName());
+            }
+            return result;
+        }
     }
 }

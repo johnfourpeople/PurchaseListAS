@@ -1,23 +1,23 @@
 package ru.JB.develop.purchaselist.Dialogs;
 
 import android.app.Dialog;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import ru.JB.develop.purchaselist.Model.ProductItem;
 import ru.JB.develop.purchaselist.Model.ProductItems;
 import ru.JB.develop.purchaselist.ProductFragment;
+import ru.JB.develop.purchaselist.PurchaseFragment;
 import ru.JB.develop.purchaselist.R;
 
 /**
@@ -30,10 +30,11 @@ public class AddPurchaseDialog extends DialogFragment implements View.OnClickLis
     AutoCompleteTextView newPurchase;
     ProductItems products;
 
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_add_purchase, new FrameLayout(getActivity()));
+        View v = getActivity().getLayoutInflater().inflate(R.layout.d_add_purchase, new FrameLayout(getActivity()));
         addPurch  = (Button) v.findViewById(R.id.add_new_purchase);
         addPurch.setOnClickListener(this);
         cancelAddPurch = (Button) v.findViewById(R.id.cancel_add_new_purchase);
@@ -65,13 +66,21 @@ public class AddPurchaseDialog extends DialogFragment implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.add_new_purchase:
-            dismiss();
+            if (!newPurchase.getText().toString().trim().isEmpty()) {
+                int newId = products.add(new ProductItem(newPurchase.getText().toString()));
+                List<Integer> id = new ArrayList<>();
+                id.add(Math.abs(newId));
+                PurchaseFragment fragment = PurchaseFragment.newInstance(id);
+                android.support.v4.app.FragmentManager manager = getFragmentManager();
+                manager.beginTransaction().replace(R.id.container, fragment)
+                        .commit();
+                dismiss();
+            }
             break;
         case R.id.cancel_add_new_purchase:
             dismiss();
             break;
         case R.id.browse_product:
-            Log.d("TAG","SAS");
             android.support.v4.app.FragmentManager manager = getFragmentManager();
             manager.beginTransaction().replace(R.id.container, new ProductFragment())
                     .addToBackStack(null).commit();

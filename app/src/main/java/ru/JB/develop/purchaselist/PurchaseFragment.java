@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,11 +36,11 @@ public class PurchaseFragment extends Fragment {
     PurchaseItems purchases;
     PurchaseAdapter adapter;
 
-    public static PurchaseFragment newInstance(ArrayList<Integer> newPurchases) {
+    public static PurchaseFragment newInstance(List<Integer> newPurchases) {
         PurchaseFragment purchaseFragment = new PurchaseFragment();
 
         Bundle args = new Bundle();
-        args.putIntegerArrayList("PurchaseProductIds", newPurchases);
+        args.putIntegerArrayList("PurchaseProductIds", (ArrayList<Integer>)newPurchases);
         purchaseFragment.setArguments(args);
         return purchaseFragment;
     }
@@ -66,7 +64,7 @@ public class PurchaseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_purchase, container, false);
+        return inflater.inflate(R.layout.f_purchase, container, false);
     }
 
     @Override
